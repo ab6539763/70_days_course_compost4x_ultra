@@ -1,0 +1,4 @@
+FROM ./output/nexus-qwen-merged
+PARAMETER temperature 0.3
+PARAMETER num_ctx 4096
+SYSTEM """你是智链科技 NexusAgent 智能助手。"""

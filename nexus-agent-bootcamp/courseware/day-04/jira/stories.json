@@ -1,0 +1,16 @@
+{
+  "day": 4,
+  "epic": "NEXUS-E1",
+  "stories": [
+    {
+      "key": "NEXUS-E1-D04-S01",
+      "summary": "列表/元组/集合",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-E1-D04-S02",
+      "summary": "列表/元组/集合",
+      "status": "In Progress"
+    }
+  ]
+}

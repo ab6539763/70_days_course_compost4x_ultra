@@ -1,0 +1,11 @@
+{
+  "day": 64,
+  "epic": "NEXUS-E6",
+  "stories": [
+    {
+      "key": "NEXUS-608",
+      "summary": "毕业设计开发：测试与性能优化",
+      "status": "In Progress"
+    }
+  ]
+}

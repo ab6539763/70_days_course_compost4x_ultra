@@ -1,0 +1,11 @@
+{
+  "day": 38,
+  "epic": "NEXUS-E3",
+  "stories": [
+    {
+      "key": "NEXUS-381",
+      "summary": "Phase 3 答辩",
+      "status": "In Progress"
+    }
+  ]
+}

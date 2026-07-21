@@ -1,0 +1,44 @@
+stages:
+  - lint
+  - test
+  - build
+
+variables:
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.cache/pip"
+
+cache:
+  paths:
+    - .cache/pip
+
+lint:courseware:
+  stage: lint
+  image: python:3.11-slim
+  script:
+    - pip install ruff -q
+    - ruff check platform/nexus_agent/ --ignore E501 || true
+  only:
+    - merge_requests
+    - main
+    - develop
+
+test:platform:
+  stage: test
+  image: python:3.11-slim
+  script:
+    - pip install pytest -q
+    - cd platform && pytest tests/test_module_0000.py tests/test_module_0001.py -q
+  only:
+    - merge_requests
+    - main
+    - develop
+
+build:docker:
+  stage: build
+  image: docker:24
+  services:
+    - docker:24-dind
+  script:
+    - docker build -f platform/docker/Dockerfile -t nexus-agent:$CI_COMMIT_SHORT_SHA platform/
+  only:
+    - main
+    - develop

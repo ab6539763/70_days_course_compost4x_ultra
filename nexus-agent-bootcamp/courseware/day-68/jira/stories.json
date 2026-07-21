@@ -1,0 +1,11 @@
+{
+  "day": 68,
+  "epic": "NEXUS-E6",
+  "stories": [
+    {
+      "key": "NEXUS-612",
+      "summary": "技术面试（二）：RAG 与 LLM 应用",
+      "status": "In Progress"
+    }
+  ]
+}

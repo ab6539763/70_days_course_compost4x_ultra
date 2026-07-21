@@ -1,0 +1,11 @@
+{
+  "day": 60,
+  "epic": "NEXUS-E6",
+  "stories": [
+    {
+      "key": "NEXUS-604",
+      "summary": "毕业设计开发：RAG 知识库模块",
+      "status": "In Progress"
+    }
+  ]
+}

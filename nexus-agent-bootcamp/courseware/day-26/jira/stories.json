@@ -1,0 +1,16 @@
+{
+  "day": 26,
+  "epic": "NEXUS-E3",
+  "stories": [
+    {
+      "key": "NEXUS-261",
+      "summary": "LCEL 链式表达",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-262",
+      "summary": "LCEL 链式表达",
+      "status": "In Progress"
+    }
+  ]
+}

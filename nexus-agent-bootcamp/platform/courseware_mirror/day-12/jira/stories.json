@@ -1,0 +1,21 @@
+{
+  "day": 12,
+  "epic": "NEXUS-E1",
+  "stories": [
+    {
+      "key": "NEXUS-1201",
+      "summary": "网络请求与 API — 首次 LLM 调用",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-1202",
+      "summary": "网络请求与 API — 首次 LLM 调用",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-1203",
+      "summary": "网络请求与 API — 首次 LLM 调用",
+      "status": "In Progress"
+    }
+  ]
+}

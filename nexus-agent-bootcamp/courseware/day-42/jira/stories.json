@@ -1,0 +1,16 @@
+{
+  "day": 42,
+  "epic": "NEXUS-E4",
+  "stories": [
+    {
+      "key": "NEXUS-421",
+      "summary": "LangGraph 进阶",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-422",
+      "summary": "LangGraph 进阶",
+      "status": "In Progress"
+    }
+  ]
+}

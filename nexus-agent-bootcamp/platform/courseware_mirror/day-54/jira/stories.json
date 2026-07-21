@@ -1,0 +1,16 @@
+{
+  "day": 54,
+  "epic": "NEXUS-E5",
+  "stories": [
+    {
+      "key": "NEXUS-507",
+      "summary": "模型评估与 LoRA 权重合并",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-508",
+      "summary": "模型评估与 LoRA 权重合并",
+      "status": "In Progress"
+    }
+  ]
+}

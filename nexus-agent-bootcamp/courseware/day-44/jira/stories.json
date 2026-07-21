@@ -1,0 +1,16 @@
+{
+  "day": 44,
+  "epic": "NEXUS-E4",
+  "stories": [
+    {
+      "key": "NEXUS-441",
+      "summary": "MCP 协议",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-442",
+      "summary": "MCP 协议",
+      "status": "In Progress"
+    }
+  ]
+}

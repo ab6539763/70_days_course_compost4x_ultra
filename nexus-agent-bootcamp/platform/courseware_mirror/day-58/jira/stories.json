@@ -1,0 +1,16 @@
+{
+  "day": 58,
+  "epic": "NEXUS-E6",
+  "stories": [
+    {
+      "key": "NEXUS-601",
+      "summary": "毕业设计选题与项目脚手架",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-602",
+      "summary": "毕业设计选题与项目脚手架",
+      "status": "In Progress"
+    }
+  ]
+}

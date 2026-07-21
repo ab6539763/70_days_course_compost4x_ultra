@@ -1,0 +1,11 @@
+{
+  "day": 67,
+  "epic": "NEXUS-E6",
+  "stories": [
+    {
+      "key": "NEXUS-611",
+      "summary": "技术面试（一）：Python 与后端基础",
+      "status": "In Progress"
+    }
+  ]
+}

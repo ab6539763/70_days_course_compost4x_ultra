@@ -1,0 +1,21 @@
+{
+  "day": 19,
+  "epic": "NEXUS-E2",
+  "stories": [
+    {
+      "key": "NEXUS-191",
+      "summary": "Function Calling工具调用",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-192",
+      "summary": "Function Calling工具调用",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-193",
+      "summary": "Function Calling工具调用",
+      "status": "In Progress"
+    }
+  ]
+}

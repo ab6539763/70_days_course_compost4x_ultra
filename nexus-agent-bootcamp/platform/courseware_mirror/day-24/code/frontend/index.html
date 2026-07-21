@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NexusAgent 聊天 — Day 22</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <h1>🤖 NexusAgent</h1>
+      <p class="subtitle">智链科技 · Day 22 静态聊天原型</p>
+    </header>
+    <main id="chat-window" class="chat-window" aria-live="polite">
+      <div class="message bot">
+        <div class="bubble">你好！我是 Nexus 助手，有什么可以帮你？</div>
+      </div>
+    </main>
+    <footer class="input-area">
+      <input id="user-input" type="text" placeholder="输入消息，按 Enter 发送..." autocomplete="off" />
+      <button id="send-btn" type="button">发送</button>
+    </footer>
+  </div>
+  <script src="chat.js"></script>
+</body>
+</html>

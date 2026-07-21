@@ -1,0 +1,16 @@
+{
+  "day": 52,
+  "epic": "NEXUS-E5",
+  "stories": [
+    {
+      "key": "NEXUS-503",
+      "summary": "微调数据集：Alpaca 格式与质量校验",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-504",
+      "summary": "微调数据集：Alpaca 格式与质量校验",
+      "status": "In Progress"
+    }
+  ]
+}

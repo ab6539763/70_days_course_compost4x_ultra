@@ -1,0 +1,11 @@
+{
+  "day": 70,
+  "epic": "NEXUS-E6",
+  "stories": [
+    {
+      "key": "NEXUS-614",
+      "summary": "结业典礼：70 天旅程回顾与展望",
+      "status": "In Progress"
+    }
+  ]
+}

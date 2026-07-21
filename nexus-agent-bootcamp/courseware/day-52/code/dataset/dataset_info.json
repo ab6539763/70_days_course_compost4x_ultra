@@ -1,0 +1,12 @@
+{
+  "nexus_qa": {
+    "file_name": "nexus_qa_train.json",
+    "formatting": "alpaca",
+    "columns": {
+      "prompt": "instruction",
+      "query": "input",
+      "response": "output",
+      "system": "system"
+    }
+  }
+}

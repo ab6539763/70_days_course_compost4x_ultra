@@ -1,0 +1,16 @@
+{
+  "day": 40,
+  "epic": "NEXUS-E4",
+  "stories": [
+    {
+      "key": "NEXUS-401",
+      "summary": "LangChain Agent",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-402",
+      "summary": "LangChain Agent",
+      "status": "In Progress"
+    }
+  ]
+}

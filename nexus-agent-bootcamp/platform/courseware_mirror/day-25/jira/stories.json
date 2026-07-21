@@ -1,0 +1,16 @@
+{
+  "day": 25,
+  "epic": "NEXUS-E3",
+  "stories": [
+    {
+      "key": "NEXUS-251",
+      "summary": "LangChain 入门",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-252",
+      "summary": "LangChain 入门",
+      "status": "In Progress"
+    }
+  ]
+}
