@@ -1,16 +1,27 @@
 {
   "day": 2,
   "epic": "NEXUS-E1",
+  "sprint": "Week-1",
   "stories": [
     {
       "key": "NEXUS-E1-D02-S01",
-      "summary": "运算符与字符串",
-      "status": "In Progress"
+      "summary": "文本清洗脚本 text_cleaner.py",
+      "status": "Done",
+      "acceptance_criteria": [
+        "管道式清洗函数可运行",
+        "支持 --file 和 --stdin",
+        "通过 run_day02_full_test.sh"
+      ]
     },
     {
       "key": "NEXUS-E1-D02-S02",
-      "summary": "运算符与字符串",
-      "status": "In Progress"
+      "summary": "运算符与 f-string 基础模块",
+      "status": "Done",
+      "acceptance_criteria": [
+        "operators_demo.py 运行通过",
+        "string_basics.py 运行通过",
+        "prompt_fstring.py 输出 RAG 模板"
+      ]
     }
   ]
 }
