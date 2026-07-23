@@ -1,0 +1,5 @@
+roles:
+  admin: [model:deploy, audit:read]
+  operator: [model:inference, rag:manage]
+  viewer: [chat:use]
+default_policy: deny

@@ -1,0 +1,21 @@
+{
+  "day": 9,
+  "epic": "NEXUS-E1",
+  "stories": [
+    {
+      "key": "NEXUS-901",
+      "summary": "OOP 下：继承、抽象类与多态 — 模型适配层",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-902",
+      "summary": "OOP 下：继承、抽象类与多态 — 模型适配层",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-903",
+      "summary": "OOP 下：继承、抽象类与多态 — 模型适配层",
+      "status": "In Progress"
+    }
+  ]
+}

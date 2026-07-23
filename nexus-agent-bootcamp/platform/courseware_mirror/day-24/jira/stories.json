@@ -1,0 +1,21 @@
+{
+  "day": 24,
+  "epic": "NEXUS-E2",
+  "stories": [
+    {
+      "key": "NEXUS-241",
+      "summary": "FastAPI后端（下）与数据库",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-242",
+      "summary": "FastAPI后端（下）与数据库",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-243",
+      "summary": "FastAPI后端（下）与数据库",
+      "status": "In Progress"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "day": 30,
+  "epic": "NEXUS-E3",
+  "stories": [
+    {
+      "key": "NEXUS-301",
+      "summary": "完整 RAG",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-302",
+      "summary": "完整 RAG",
+      "status": "In Progress"
+    }
+  ]
+}

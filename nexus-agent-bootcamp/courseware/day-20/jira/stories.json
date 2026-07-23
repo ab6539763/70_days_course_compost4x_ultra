@@ -1,0 +1,16 @@
+{
+  "day": 20,
+  "epic": "NEXUS-E2",
+  "stories": [
+    {
+      "key": "NEXUS-201",
+      "summary": "Embedding与语义检索",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-202",
+      "summary": "Embedding与语义检索",
+      "status": "In Progress"
+    }
+  ]
+}

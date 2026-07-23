@@ -1,0 +1,11 @@
+{
+  "day": 59,
+  "epic": "NEXUS-E6",
+  "stories": [
+    {
+      "key": "NEXUS-603",
+      "summary": "毕业设计开发：用户认证模块",
+      "status": "In Progress"
+    }
+  ]
+}

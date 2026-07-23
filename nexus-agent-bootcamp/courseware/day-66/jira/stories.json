@@ -1,0 +1,11 @@
+{
+  "day": 66,
+  "epic": "NEXUS-E6",
+  "stories": [
+    {
+      "key": "NEXUS-610",
+      "summary": "求职简历：AI 工程师简历打造",
+      "status": "In Progress"
+    }
+  ]
+}

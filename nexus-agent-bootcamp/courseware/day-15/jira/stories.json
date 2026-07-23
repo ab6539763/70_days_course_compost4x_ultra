@@ -1,0 +1,21 @@
+{
+  "day": 15,
+  "epic": "NEXUS-E2",
+  "stories": [
+    {
+      "key": "NEXUS-151",
+      "summary": "LLM原理科普",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-152",
+      "summary": "LLM原理科普",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-153",
+      "summary": "LLM原理科普",
+      "status": "In Progress"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+[
+  {"question": "年假有几天", "ground_truth": "5天", "contexts": ["工作满一年享5天年假"]},
+  {"question": "报销期限", "ground_truth": "30日内", "contexts": ["差旅费30日内提交"]}
+]

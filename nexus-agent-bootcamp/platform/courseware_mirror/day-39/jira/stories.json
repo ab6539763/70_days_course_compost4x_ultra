@@ -1,0 +1,16 @@
+{
+  "day": 39,
+  "epic": "NEXUS-E4",
+  "stories": [
+    {
+      "key": "NEXUS-391",
+      "summary": "ReAct 手写",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-392",
+      "summary": "ReAct 手写",
+      "status": "In Progress"
+    }
+  ]
+}

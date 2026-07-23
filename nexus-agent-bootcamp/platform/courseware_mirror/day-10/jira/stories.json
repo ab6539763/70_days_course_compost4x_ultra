@@ -1,0 +1,21 @@
+{
+  "day": 10,
+  "epic": "NEXUS-E1",
+  "stories": [
+    {
+      "key": "NEXUS-1001",
+      "summary": "模块、包与异常 — nexus_cli 包结构",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-1002",
+      "summary": "模块、包与异常 — nexus_cli 包结构",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-1003",
+      "summary": "模块、包与异常 — nexus_cli 包结构",
+      "status": "In Progress"
+    }
+  ]
+}

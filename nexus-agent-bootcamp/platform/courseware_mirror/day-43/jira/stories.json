@@ -1,0 +1,16 @@
+{
+  "day": 43,
+  "epic": "NEXUS-E4",
+  "stories": [
+    {
+      "key": "NEXUS-431",
+      "summary": "多 Agent 协作",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-432",
+      "summary": "多 Agent 协作",
+      "status": "In Progress"
+    }
+  ]
+}

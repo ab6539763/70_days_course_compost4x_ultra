@@ -1,0 +1,16 @@
+{
+  "day": 53,
+  "epic": "NEXUS-E5",
+  "stories": [
+    {
+      "key": "NEXUS-505",
+      "summary": "LLaMA-Factory 配置与 QLoRA 训练",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-506",
+      "summary": "LLaMA-Factory 配置与 QLoRA 训练",
+      "status": "In Progress"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "day": 7,
+  "epic": "NEXUS-E1",
+  "stories": [
+    {
+      "key": "NEXUS-E1-D07-S01",
+      "summary": "周复习",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-E1-D07-S02",
+      "summary": "周复习",
+      "status": "In Progress"
+    }
+  ]
+}

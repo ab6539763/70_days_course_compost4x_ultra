@@ -1,0 +1,11 @@
+{
+  "day": 69,
+  "epic": "NEXUS-E6",
+  "stories": [
+    {
+      "key": "NEXUS-613",
+      "summary": "技术面试（三）：项目深挖与行为面试",
+      "status": "In Progress"
+    }
+  ]
+}

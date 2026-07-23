@@ -1,0 +1,21 @@
+{
+  "day": 1,
+  "epic": "NEXUS-E1",
+  "stories": [
+    {
+      "key": "NEXUS-E1-D01-S01",
+      "summary": "开发环境与第一行代码",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-E1-D01-S02",
+      "summary": "开发环境与第一行代码",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-E1-D01-S03",
+      "summary": "开发环境与第一行代码",
+      "status": "In Progress"
+    }
+  ]
+}

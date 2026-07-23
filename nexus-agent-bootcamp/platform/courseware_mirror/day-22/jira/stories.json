@@ -1,0 +1,16 @@
+{
+  "day": 22,
+  "epic": "NEXUS-E2",
+  "stories": [
+    {
+      "key": "NEXUS-221",
+      "summary": "前端速成与静态聊天",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-222",
+      "summary": "前端速成与静态聊天",
+      "status": "In Progress"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "day": 55,
+  "epic": "NEXUS-E5",
+  "stories": [
+    {
+      "key": "NEXUS-509",
+      "summary": "Ollama 与 vLLM 本地推理服务",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-510",
+      "summary": "Ollama 与 vLLM 本地推理服务",
+      "status": "In Progress"
+    }
+  ]
+}

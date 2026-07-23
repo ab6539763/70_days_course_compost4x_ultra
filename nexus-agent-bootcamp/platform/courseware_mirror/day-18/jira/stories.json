@@ -1,0 +1,16 @@
+{
+  "day": 18,
+  "epic": "NEXUS-E2",
+  "stories": [
+    {
+      "key": "NEXUS-181",
+      "summary": "Prompt进阶与JSON输出",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-182",
+      "summary": "Prompt进阶与JSON输出",
+      "status": "In Progress"
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "day": 14,
+  "epic": "NEXUS-E1",
+  "stories": [
+    {
+      "key": "NEXUS-1401",
+      "summary": "阶段项目一：CLI 多轮对话助手",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-1402",
+      "summary": "阶段项目一：CLI 多轮对话助手",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-1403",
+      "summary": "阶段项目一：CLI 多轮对话助手",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-1404",
+      "summary": "阶段项目一：CLI 多轮对话助手",
+      "status": "In Progress"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "survey_title": "NexusAgent 70天训练营结业反馈",
+  "questions": [
+    {"id": 1, "question": "整体满意度（1-10）", "type": "rating"},
+    {"id": 2, "question": "最有价值的模块", "type": "multi_choice", "options": ["Python基础", "RAG", "Agent", "微调", "毕业设计"]},
+    {"id": 3, "question": "需要改进的地方", "type": "text"},
+    {"id": 4, "question": "是否愿意推荐给朋友", "type": "rating", "scale": "NPS"},
+    {"id": 5, "question": "结业后最想做的工作", "type": "text"}
+  ]
+}

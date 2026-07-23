@@ -1,0 +1,11 @@
+{
+  "day": 65,
+  "epic": "NEXUS-E6",
+  "stories": [
+    {
+      "key": "NEXUS-609",
+      "summary": "毕业答辩：项目演示与评审",
+      "status": "In Progress"
+    }
+  ]
+}

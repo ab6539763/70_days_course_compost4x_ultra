@@ -1,0 +1,16 @@
+{
+  "day": 51,
+  "epic": "NEXUS-E5",
+  "stories": [
+    {
+      "key": "NEXUS-501",
+      "summary": "微调理论：LoRA/QLoRA 与参数高效微调",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-502",
+      "summary": "微调理论：LoRA/QLoRA 与参数高效微调",
+      "status": "In Progress"
+    }
+  ]
+}

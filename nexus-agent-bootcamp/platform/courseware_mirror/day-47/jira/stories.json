@@ -1,0 +1,16 @@
+{
+  "day": 47,
+  "epic": "NEXUS-E4",
+  "stories": [
+    {
+      "key": "NEXUS-471",
+      "summary": "Text2SQL",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-472",
+      "summary": "Text2SQL",
+      "status": "In Progress"
+    }
+  ]
+}

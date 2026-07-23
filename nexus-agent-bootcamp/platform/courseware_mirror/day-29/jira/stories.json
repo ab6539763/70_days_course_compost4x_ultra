@@ -1,0 +1,16 @@
+{
+  "day": 29,
+  "epic": "NEXUS-E3",
+  "stories": [
+    {
+      "key": "NEXUS-291",
+      "summary": "向量库 Chroma",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-292",
+      "summary": "向量库 Chroma",
+      "status": "In Progress"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "day": 8,
+  "epic": "NEXUS-E1",
+  "stories": [
+    {
+      "key": "NEXUS-801",
+      "summary": "OOP 上：类与对象 — ChatMessage 领域模型",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-802",
+      "summary": "OOP 上：类与对象 — ChatMessage 领域模型",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-803",
+      "summary": "OOP 上：类与对象 — ChatMessage 领域模型",
+      "status": "In Progress"
+    }
+  ]
+}

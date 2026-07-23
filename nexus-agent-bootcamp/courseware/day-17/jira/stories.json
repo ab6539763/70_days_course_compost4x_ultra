@@ -1,0 +1,21 @@
+{
+  "day": 17,
+  "epic": "NEXUS-E2",
+  "stories": [
+    {
+      "key": "NEXUS-171",
+      "summary": "Prompt基础与模板",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-172",
+      "summary": "Prompt基础与模板",
+      "status": "In Progress"
+    },
+    {
+      "key": "NEXUS-173",
+      "summary": "Prompt基础与模板",
+      "status": "In Progress"
+    }
+  ]
+}

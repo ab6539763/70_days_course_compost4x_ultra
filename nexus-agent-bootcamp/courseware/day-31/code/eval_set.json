@@ -1,0 +1,4 @@
+[
+  {"query": "年假有几天", "expected_keywords": ["5", "年假"]},
+  {"query": "怎么报销", "expected_keywords": ["发票", "30"]}
+]
