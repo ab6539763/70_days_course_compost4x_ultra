@@ -1,21 +1,37 @@
 {
   "day": 3,
   "epic": "NEXUS-E1",
+  "sprint": "Week-1",
   "stories": [
     {
       "key": "NEXUS-E1-D03-S01",
-      "summary": "流程控制",
-      "status": "In Progress"
+      "summary": "猜数字游戏 guess_number.py",
+      "status": "Done",
+      "acceptance_criteria": [
+        "compare_guess 纯函数可单测",
+        "--demo 模式自动化运行",
+        "无效输入 continue 不扣次数"
+      ]
     },
     {
       "key": "NEXUS-E1-D03-S02",
-      "summary": "流程控制",
-      "status": "In Progress"
+      "summary": "九九乘法表 multiplication_table.py",
+      "status": "Done",
+      "acceptance_criteria": [
+        "嵌套 for + f-string 对齐",
+        "build_table 返回可测试结构",
+        "--size 参数 1-9"
+      ]
     },
     {
       "key": "NEXUS-E1-D03-S03",
-      "summary": "流程控制",
-      "status": "In Progress"
+      "summary": "CLI 菜单 menu_system.py",
+      "status": "Done",
+      "acceptance_criteria": [
+        "字典 dispatch 无超长 elif",
+        "KeyboardInterrupt 优雅退出",
+        "--test 自动化模式"
+      ]
     }
   ]
 }

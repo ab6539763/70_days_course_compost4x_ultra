@@ -1,889 +1,766 @@
 # Day 03：流程控制
 
-> **阶段**：第一阶段:Python编程基础 | **Epic**：NEXUS-E1 | **预计学时**：6-8 小时
+> **阶段**：第一阶段 · Python 编程基础 | **Epic**：NEXUS-E1 | **预计学时**：6-8 小时  
+> **版本**：Day-03-v2.0（全链路验证通过）| **Jira**：NEXUS-E1-D03-S01 / S02 / S03
+
+---
 
 ## 旁白解读：今日上下文
 
 > 🎬 **模拟站会 09:00** — 智链科技 Nexus 项目组
 
-**陈工**：流程控制是程序的「交通规则」。昨天字符串处理基本是直线执行，从今天开始代码会分叉、会循环。Jira 上三个 Story 分别对应三个可运行脚本，下午前必须都能独立跑通。
+**陈工**：流程控制是程序的「交通规则」。前两天是直线执行——从上到下跑完；从今天开始代码会**分叉**、会**循环**。Jira 上三个 Story 对应三个可运行脚本，下午 5 点前必须都能独立跑通。
 
-**林悦**：菜单系统不是玩具——NexusAgent CLI 以后就是「读指令 → 分发 → 执行」。今天用字典做 dispatch，别写 50 个 elif，那是维护地狱。
+**林悦**：菜单系统不是玩具——NexusAgent CLI（Day 14 交付）就是「读指令 → 字典分发 → 执行」。今天用 `dict` 做 dispatch，**别写 50 个 elif**，那是维护地狱。
 
 **小张**：`while True` 会不会让程序出不来？
 
-**陈工**：所以要有明确的 `break` 条件和 `Ctrl+C` 处理。下午猜数字里加了输入校验和 `continue`，这是企业脚本防呆的第一课。写完记得自己故意输错几次，看看程序稳不稳。
+**陈工**：所以要有明确的 `break` 条件和 `Ctrl+C` 处理。猜数字里加了输入校验和 `continue`——无效输入不消耗次数，这是企业脚本**防呆**的第一课。
 
+**你（学员）**：今日认领 S01 猜数字、S02 乘法表、S03 菜单系统，晚上作业把三者合并进扩展菜单。
 
-**今日在 NexusAgent 主线中的位置**：menu_system 是 NexusAgent CLI 交互模式的雏形
+**今日在 NexusAgent 主线中的位置**：
+- `menu_system.py` → Day 14 CLI 助手 `/clear` `/save` `/exit` 指令分发原型
+- `while` 重试循环 → Day 12 API 调用重试、Day 39 Agent 推理循环
+- `for` + `range` → Day 28 文档批处理、Day 11 文件遍历
 
-**今日 Jira 看板**：
-- `NEXUS-E1-D03-S01`
-- `NEXUS-E1-D03-S02`
-- `NEXUS-E1-D03-S03`
-
----
-
-
-## 需求文档（产品林悦下发）
-
-**文档编号**：PRD-NEXUS-D03  
-**版本**：v1.0  
-**优先级**：P0
-
-### 背景
-
-第一阶段:Python编程基础阶段第 3 天教学任务，与 NexusAgent 主线项目对齐。
-
-### User Stories
-
-### NEXUS-E1-D03-S01
-
-**描述**：流程控制 相关交付
-
-**验收标准**：
-- [ ] 代码可本地运行
-- [ ] 通过 `scripts/verify_day.py --day 3`
-
-### NEXUS-E1-D03-S02
-
-**描述**：流程控制 相关交付
-
-**验收标准**：
-- [ ] 代码可本地运行
-- [ ] 通过 `scripts/verify_day.py --day 3`
-
-### NEXUS-E1-D03-S03
-
-**描述**：流程控制 相关交付
-
-**验收标准**：
-- [ ] 代码可本地运行
-- [ ] 通过 `scripts/verify_day.py --day 3`
-
+**昨日回顾（Day 2）**：字符串清洗管道 → 今日用 `while` 循环批量处理多行输入。  
+**明日预告（Day 4）**：`list` 列表 → `todo_manager` 待办系统。
 
 ---
 
+## 需求文档
+
+**文档编号**：PRD-NEXUS-D03 | **优先级**：P0
+
+### NEXUS-E1-D03-S01：猜数字游戏
+
+- [x] `guess_number.py` 支持交互与 `--demo` 模式
+- [x] 纯函数 `compare_guess()` 可单元测试
+- [x] 无效输入 `continue` 且不消耗次数
+
+### NEXUS-E1-D03-S02：九九乘法表
+
+- [x] `multiplication_table.py` 嵌套 `for` + f-string 对齐
+- [x] `build_table(n)` 返回行列表供测试
+- [x] `--size` 参数支持 1-9
+
+### NEXUS-E1-D03-S03：CLI 菜单系统
+
+- [x] `menu_system.py` 字典 dispatch，无超长 elif
+- [x] `KeyboardInterrupt` 优雅退出
+- [x] `--test` 自动化测试模式
+
+---
 
 ## 今日课表
 
-### 上午 09:00-12:00
-
-- 09:00 站会：D02 清洗脚本已合并，今日进入控制流
-- 09:30 if/elif/else 分支与缩进规则（4 空格）
-- 10:30 while 循环、break/continue、无限循环陷阱
-- 11:00 for 循环与 range()、enumerate() 简介
-
-### 下午 14:00-17:30
-
-- 14:00 猜数字游戏：随机数与输入校验
-- 15:00 九九乘法表：嵌套循环与字符串对齐
-- 16:00 菜单系统：字典映射替代长 if-elif 链
-- 17:00 代码 Review：KeyboardInterrupt 优雅退出
-
-### 晚自习 19:00-21:00
-
-- 19:00 作业：为菜单增加「猜数字」子菜单项
-- 20:00 调试技巧：print 调试 vs 断点
-- 20:45 预习列表与 todo_manager 需求
+| 时段 | 内容 | 产出 |
+|------|------|------|
+| 09:30 | if/elif/else、逻辑组合 | `flow_control_basics.py` |
+| 10:30 | while + break/continue | 理论 + 重试模拟 |
+| 11:00 | for + range + enumerate | 批处理下标生成 |
+| 14:00 | 猜数字游戏 | `guess_number.py` |
+| 15:00 | 九九乘法表 | `multiplication_table.py` |
+| 16:00 | 菜单系统 | `menu_system.py` |
+| 19:00 | 作业扩展菜单 | `homework/menu_extended.py` |
 
 ---
 
+## 架构示意图
 
-## 课堂笔记
-
-### 核心知识点速查
-
-| 序号 | 知识点 | 代码位置 |
-|------|--------|----------|
-| 1 | if/elif/else 条件分支 | 见下午实操 |
-| 2 | 缩进块与 Python 语法 | 见下午实操 |
-| 3 | while 循环与终止条件 | 见下午实操 |
-| 4 | break 与 continue | 见下午实操 |
-| 5 | for 循环与 range | 见下午实操 |
-| 6 | 嵌套循环时间复杂度直觉 | 见下午实操 |
-| 7 | input() 与用户交互 | 见下午实操 |
-| 8 | 随机数 random.randint | 见下午实操 |
-| 9 | 字典映射实现分发 | 见下午实操 |
-| 10 | KeyboardInterrupt 异常处理 | 见下午实操 |
-
-### 今日流程图
+### 菜单 dispatch 模式（今日核心）
 
 ```mermaid
 flowchart TD
-    A[09:00 站会 + 需求澄清] --> B[09:30 理论授课]
-    B --> C[11:00 跟敲示例代码]
-    C --> D[14:00 下午实操]
-    D --> E[17:00 代码 Review]
-    E --> F[19:00 作业 + 答疑]
+    START[程序启动] --> LOOP[while True 主循环]
+    LOOP --> SHOW[show_menu 打印选项]
+    SHOW --> INPUT[读取用户选择]
+    INPUT --> Q{choice == '0'?}
+    Q -->|是| EXIT[break 退出]
+    Q -->|否| LOOKUP[actions.get choice]
+    LOOKUP --> VALID{handler 存在?}
+    VALID -->|否| ERR[提示无效 + continue]
+    ERR --> LOOP
+    VALID -->|是| EXEC[handler 执行]
+    EXEC --> LOOP
 ```
 
-### 架构示意图（当日目标）
+### 在 NexusAgent 全局中的位置
 
 ```mermaid
-flowchart TD
-    START[启动 menu_system] --> LOOP{while True}
-    LOOP --> SHOW[show_menu]
-    SHOW --> INPUT[用户输入 choice]
-    INPUT -->|0| EXIT[退出]
-    INPUT -->|1-3| DICT[actions 字典分发]
-    DICT --> HANDLER[具体 handler]
-    HANDLER --> LOOP
+flowchart LR
+    D03[Day3 menu_system] --> D14[Day14 CLI /clear /save]
+    D03 --> D40[Day40 Agent 工具路由]
+    D03 --> D41[Day41 LangGraph 条件边]
 ```
 
 ---
-
 
 ## 实操代码清单
 
-- `code/guess_number.py`
-- `code/multiplication_table.py`
-- `code/menu_system.py`
-
-请按顺序创建并运行。每段代码均可直接复制到对应文件执行。
-
----
-
-## 实验手册（分时段操作表）
-
-### 实验步骤 1：09:30-10:30 理论
-
-| 时间 | 动作 | 预期结果 | 失败处理 |
-|------|------|----------|----------|
-| +0min | 打开课件本节 | 看到需求与验收标准 | 检查是否拉取最新 `develop` 分支 |
-| +10min | 创建/打开当日 `code/` 文件 | 文件路径与清单一致 | 对照「实操代码清单」 |
-| +30min | 粘贴并运行第一个脚本 | 终端有正常输出无 Traceback | 见下方「排错手册」 |
-| +60min | 完成全部文件并自测 | `python3` 运行通过 | 使用 `scripts/verify_day.py --day 3` |
-| +90min | 提交 Git 并建 MR | MR 关联 Jira NEXUS-E1-D03-S01 | 按附录 Git 示例操作 |
-
-
-### 实验步骤 2：10:30-12:00 跟敲
-
-| 时间 | 动作 | 预期结果 | 失败处理 |
-|------|------|----------|----------|
-| +0min | 打开课件本节 | 看到需求与验收标准 | 检查是否拉取最新 `develop` 分支 |
-| +10min | 创建/打开当日 `code/` 文件 | 文件路径与清单一致 | 对照「实操代码清单」 |
-| +30min | 粘贴并运行第一个脚本 | 终端有正常输出无 Traceback | 见下方「排错手册」 |
-| +60min | 完成全部文件并自测 | `python3` 运行通过 | 使用 `scripts/verify_day.py --day 3` |
-| +90min | 提交 Git 并建 MR | MR 关联 Jira NEXUS-E1-D03-S01 | 按附录 Git 示例操作 |
-
-
-### 实验步骤 3：14:00-15:30 实操
-
-| 时间 | 动作 | 预期结果 | 失败处理 |
-|------|------|----------|----------|
-| +0min | 打开课件本节 | 看到需求与验收标准 | 检查是否拉取最新 `develop` 分支 |
-| +10min | 创建/打开当日 `code/` 文件 | 文件路径与清单一致 | 对照「实操代码清单」 |
-| +30min | 粘贴并运行第一个脚本 | 终端有正常输出无 Traceback | 见下方「排错手册」 |
-| +60min | 完成全部文件并自测 | `python3` 运行通过 | 使用 `scripts/verify_day.py --day 3` |
-| +90min | 提交 Git 并建 MR | MR 关联 Jira NEXUS-E1-D03-S01 | 按附录 Git 示例操作 |
-
-
-### 实验步骤 4：15:30-17:00 联调
-
-| 时间 | 动作 | 预期结果 | 失败处理 |
-|------|------|----------|----------|
-| +0min | 打开课件本节 | 看到需求与验收标准 | 检查是否拉取最新 `develop` 分支 |
-| +10min | 创建/打开当日 `code/` 文件 | 文件路径与清单一致 | 对照「实操代码清单」 |
-| +30min | 粘贴并运行第一个脚本 | 终端有正常输出无 Traceback | 见下方「排错手册」 |
-| +60min | 完成全部文件并自测 | `python3` 运行通过 | 使用 `scripts/verify_day.py --day 3` |
-| +90min | 提交 Git 并建 MR | MR 关联 Jira NEXUS-E1-D03-S01 | 按附录 Git 示例操作 |
-
-
-### 实验步骤 5：19:00-20:30 作业
-
-| 时间 | 动作 | 预期结果 | 失败处理 |
-|------|------|----------|----------|
-| +0min | 打开课件本节 | 看到需求与验收标准 | 检查是否拉取最新 `develop` 分支 |
-| +10min | 创建/打开当日 `code/` 文件 | 文件路径与清单一致 | 对照「实操代码清单」 |
-| +30min | 粘贴并运行第一个脚本 | 终端有正常输出无 Traceback | 见下方「排错手册」 |
-| +60min | 完成全部文件并自测 | `python3` 运行通过 | 使用 `scripts/verify_day.py --day 3` |
-| +90min | 提交 Git 并建 MR | MR 关联 Jira NEXUS-E1-D03-S01 | 按附录 Git 示例操作 |
-
-
-### 排错手册（Day 3）
-
-1. **`command not found: python3`** → 安装 Python 3.10+ 或使用 `py -3`（Windows）
-2. **`ModuleNotFoundError`** → 确认当前目录、是否激活 venv、`pip install -r requirements.txt`（若当日有）
-3. **`SyntaxError: invalid syntax`** → 检查上一行是否缺括号、引号是否中文
-4. **`UnicodeDecodeError`** → 文件保存为 UTF-8，终端 `export PYTHONIOENCODING=utf-8`
-5. **API 相关（Day12+）** → 检查 `.env` 中 Key，无 Key 时使用课件 MOCK 模式
+| 序号 | 文件 | 命令 |
+|------|------|------|
+| 1 | `flow_control_basics.py` | `python3 flow_control_basics.py` |
+| 2 | `guess_number.py` | `python3 guess_number.py --demo` |
+| 3 | `multiplication_table.py` | `python3 multiplication_table.py --size 5` |
+| 4 | `menu_system.py` | `python3 menu_system.py --test` |
+| 5 | 作业 | `python3 ../homework/menu_extended.py --test` |
+| 6 | 测试 | `python3 -m pytest test_day03.py -v` |
 
 ---
 
+## 逐步跟敲指南
 
-## 逐步跟敲指南（完整源码与解析）
+### 1. flow_control_basics.py — 上午理论
 
-> 以下代码与 `code/` 目录完全一致，可直接复制。每段附行级说明。
-
-### 文件：`code/guess_number.py`
-
-**操作步骤**：
-1. 在 `courseware/day-03/code/` 下创建文件 `guess_number.py`
-2. 完整粘贴下方代码
-3. 在终端执行：`cd courseware/day-03/code && python3 guess_number.py`（若为包内模块则按课件说明）
+**if / elif / else 骨架**（HTTP 状态码分支）：
 
 ```python
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""猜数字游戏 — 练习 while、if、break 与随机数。"""
-import random
-
-SECRET_MIN = 1
-SECRET_MAX = 100
-MAX_ATTEMPTS = 7
-
-
-def play_round() -> None:
-    target = random.randint(SECRET_MIN, SECRET_MAX)
-    attempts = 0
-    print(f"我想了一个 {SECRET_MIN}-{SECRET_MAX} 的整数，你有 {MAX_ATTEMPTS} 次机会。")
-    while attempts < MAX_ATTEMPTS:
-        attempts += 1
-        raw = input(f"第 {attempts} 次猜测: ").strip()
-        if not raw.isdigit():
-            print("请输入有效数字！")
-            attempts -= 1
-            continue
-        guess = int(raw)
-        if guess < target:
-            print("太小了 ↑")
-        elif guess > target:
-            print("太大了 ↓")
-        else:
-            print(f"恭喜！{attempts} 次猜中！")
-            return
-    print(f"游戏结束，答案是 {target}")
-
-
-def main() -> None:
-    play_round()
-
-
-if __name__ == "__main__":
-    main()
-
+if http_status == 200:
+    message = "成功"
+elif http_status == 429:
+    message = "限流，重试"
+else:
+    message = "其他"
 ```
 
-**解析要点（`guess_number.py`）**：
-
-- 共 **38** 行，请逐行阅读注释中的中文说明
-
-- 运行前确认 Python 版本 ≥ 3.10：`python3 --version`
-
-- 若报错，先检查缩进是否为 4 空格，勿混用 Tab
-
-- 企业 Review 清单：命名是否清晰、是否有异常处理、是否可复用
-
----
-
-### 文件：`code/multiplication_table.py`
-
-**操作步骤**：
-1. 在 `courseware/day-03/code/` 下创建文件 `multiplication_table.py`
-2. 完整粘贴下方代码
-3. 在终端执行：`cd courseware/day-03/code && python3 multiplication_table.py`（若为包内模块则按课件说明）
+**while + break**（API 重试，第 3 次成功退出）：
 
 ```python
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""九九乘法表 — 嵌套 for 循环与格式化对齐。"""
-SIZE = 9
-
-
-def print_table(size: int = SIZE) -> None:
-    for i in range(1, size + 1):
-        parts: list[str] = []
-        for j in range(1, i + 1):
-            parts.append(f"{j}×{i}={i*j:2d}")
-        print("  ".join(parts))
-
-
-def main() -> None:
-    print_table()
-
-
-if __name__ == "__main__":
-    main()
-
+while attempt < max_retries:
+    attempt += 1
+    if attempt == 3:
+        break  # 立即跳出循环
 ```
 
-**解析要点（`multiplication_table.py`）**：
-
-- 共 **20** 行，请逐行阅读注释中的中文说明
-
-- 运行前确认 Python 版本 ≥ 3.10：`python3 --version`
-
-- 若报错，先检查缩进是否为 4 空格，勿混用 Tab
-
-- 企业 Review 清单：命名是否清晰、是否有异常处理、是否可复用
-
----
-
-### 文件：`code/menu_system.py`
-
-**操作步骤**：
-1. 在 `courseware/day-03/code/` 下创建文件 `menu_system.py`
-2. 完整粘贴下方代码
-3. 在终端执行：`cd courseware/day-03/code && python3 menu_system.py`（若为包内模块则按课件说明）
+**for + range**（批处理下标，Day 28 文档入库复用）：
 
 ```python
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-简易菜单系统 — 流程控制综合练习
-模拟 NexusAgent CLI 指令菜单雏形
-"""
-from __future__ import annotations
-
-import sys
-
-
-def show_banner() -> None:
-    print("=" * 40)
-    print("  NexusAgent CLI 菜单 (Day 3 教学版)")
-    print("=" * 40)
-
-
-def show_menu() -> None:
-    print("1. 查看版本")
-    print("2. 查看今日学习目标")
-    print("3. 计算两数之和")
-    print("0. 退出")
-
-
-def handle_version() -> None:
-    print("NexusAgent Bootcamp v0.1-day03")
-
-
-def handle_goal() -> None:
-    print("今日目标: 掌握 if/elif/else、while、for 与 break/continue")
-
-
-def handle_add() -> None:
-    a = input("输入整数 a: ").strip()
-    b = input("输入整数 b: ").strip()
-    if not (a.lstrip("-").isdigit() and b.lstrip("-").isdigit()):
-        print("输入无效，请输入整数")
-        return
-    result = int(a) + int(b)
-    print(f"结果: {result}")
-
-
-def run_menu() -> None:
-    actions = {
-        "1": handle_version,
-        "2": handle_goal,
-        "3": handle_add,
-    }
-    show_banner()
-    while True:
-        show_menu()
-        choice = input("请选择: ").strip()
-        if choice == "0":
-            print("再见！")
-            break
-        handler = actions.get(choice)
-        if handler is None:
-            print("无效选项，请重试")
-            continue
-        handler()
-        print("-" * 40)
-
-
-def main() -> None:
-    try:
-        run_menu()
-    except KeyboardInterrupt:
-        print("\n用户中断，安全退出")
-        sys.exit(0)
-
-
-if __name__ == "__main__":
-    main()
-
+for start in range(0, total, batch_size):
+    end = min(start + batch_size, total)
 ```
 
-**解析要点（`menu_system.py`）**：
+**enumerate**（带行号遍历）：
 
-- 共 **73** 行，请逐行阅读注释中的中文说明
-
-- 运行前确认 Python 版本 ≥ 3.10：`python3 --version`
-
-- 若报错，先检查缩进是否为 4 空格，勿混用 Tab
-
-- 企业 Review 清单：命名是否清晰、是否有异常处理、是否可复用
+```python
+for idx, line in enumerate(lines, start=1):
+    print(f"{idx:03d}| {line}")
+```
 
 ---
 
-
-
-### 深度讲解 1：if/elif/else 条件分支
-
-在企业级 Python 开发与大模型应用工程中，**if/elif/else 条件分支** 是学员必须牢固掌握的基本功。智链科技 Nexus 项目组在 Day 3 的代码评审中，特别强调以下几点：
-
-1. **为什么学**：if/elif/else 条件分支 直接服务于后续 NexusAgent 平台的 `NEXUS-E1` 模块。没有扎实的 if/elif/else 条件分支，Day 10 之后调用 API、解析 JSON、编写 Agent 工具函数时会出现大量低级错误。
-
-2. **常见坑**：
-   - 忽略输入类型校验，导致运行时 `TypeError`
-   - 编码问题（Windows 默认 GBK vs UTF-8）
-   - 复制粘贴时缩进错乱（Python 对缩进敏感）
-
-3. **企业实践**：在 SmartLink 的 GitLab 仓库中，所有与 if/elif/else 条件分支 相关的代码必须经过 Ruff 静态检查；变量命名使用 `snake_case`，常量使用 `UPPER_SNAKE_CASE`。
-
-4. **与主线项目的关系**：今日代码位于 `courseware/day-03/code/`，部分模块将逐步合并到 `platform/nexus_agent/`。请养成「每日代码皆可运行、皆可测试」的习惯。
-
-5. **扩展阅读建议**：完成今日作业后，可阅读 `docs/project-master-plan.md` 中关于 NEXUS-E1 的章节，建立全局视角。
-
-**课堂互动题**：请用 3 句话向非技术同事解释「if/elif/else 条件分支」是什么。写在作业 MR 的评论里，讲师会抽查点评。
-
-**实操检查清单**：
-- [ ] 能不看课件复述 if/elif/else 条件分支 的定义
-- [ ] 能独立写出相关代码并运行
-- [ ] 能向同学讲解一处容易写错的地方
-
-
-
-### 深度讲解 2：缩进块与 Python 语法
-
-在企业级 Python 开发与大模型应用工程中，**缩进块与 Python 语法** 是学员必须牢固掌握的基本功。智链科技 Nexus 项目组在 Day 3 的代码评审中，特别强调以下几点：
-
-1. **为什么学**：缩进块与 Python 语法 直接服务于后续 NexusAgent 平台的 `NEXUS-E1` 模块。没有扎实的 缩进块与 Python 语法，Day 10 之后调用 API、解析 JSON、编写 Agent 工具函数时会出现大量低级错误。
-
-2. **常见坑**：
-   - 忽略输入类型校验，导致运行时 `TypeError`
-   - 编码问题（Windows 默认 GBK vs UTF-8）
-   - 复制粘贴时缩进错乱（Python 对缩进敏感）
-
-3. **企业实践**：在 SmartLink 的 GitLab 仓库中，所有与 缩进块与 Python 语法 相关的代码必须经过 Ruff 静态检查；变量命名使用 `snake_case`，常量使用 `UPPER_SNAKE_CASE`。
-
-4. **与主线项目的关系**：今日代码位于 `courseware/day-03/code/`，部分模块将逐步合并到 `platform/nexus_agent/`。请养成「每日代码皆可运行、皆可测试」的习惯。
-
-5. **扩展阅读建议**：完成今日作业后，可阅读 `docs/project-master-plan.md` 中关于 NEXUS-E1 的章节，建立全局视角。
-
-**课堂互动题**：请用 3 句话向非技术同事解释「缩进块与 Python 语法」是什么。写在作业 MR 的评论里，讲师会抽查点评。
-
-**实操检查清单**：
-- [ ] 能不看课件复述 缩进块与 Python 语法 的定义
-- [ ] 能独立写出相关代码并运行
-- [ ] 能向同学讲解一处容易写错的地方
-
-
-
-### 深度讲解 3：while 循环与终止条件
-
-在企业级 Python 开发与大模型应用工程中，**while 循环与终止条件** 是学员必须牢固掌握的基本功。智链科技 Nexus 项目组在 Day 3 的代码评审中，特别强调以下几点：
-
-1. **为什么学**：while 循环与终止条件 直接服务于后续 NexusAgent 平台的 `NEXUS-E1` 模块。没有扎实的 while 循环与终止条件，Day 10 之后调用 API、解析 JSON、编写 Agent 工具函数时会出现大量低级错误。
-
-2. **常见坑**：
-   - 忽略输入类型校验，导致运行时 `TypeError`
-   - 编码问题（Windows 默认 GBK vs UTF-8）
-   - 复制粘贴时缩进错乱（Python 对缩进敏感）
-
-3. **企业实践**：在 SmartLink 的 GitLab 仓库中，所有与 while 循环与终止条件 相关的代码必须经过 Ruff 静态检查；变量命名使用 `snake_case`，常量使用 `UPPER_SNAKE_CASE`。
-
-4. **与主线项目的关系**：今日代码位于 `courseware/day-03/code/`，部分模块将逐步合并到 `platform/nexus_agent/`。请养成「每日代码皆可运行、皆可测试」的习惯。
-
-5. **扩展阅读建议**：完成今日作业后，可阅读 `docs/project-master-plan.md` 中关于 NEXUS-E1 的章节，建立全局视角。
-
-**课堂互动题**：请用 3 句话向非技术同事解释「while 循环与终止条件」是什么。写在作业 MR 的评论里，讲师会抽查点评。
-
-**实操检查清单**：
-- [ ] 能不看课件复述 while 循环与终止条件 的定义
-- [ ] 能独立写出相关代码并运行
-- [ ] 能向同学讲解一处容易写错的地方
-
-
-
-### 深度讲解 4：break 与 continue
-
-在企业级 Python 开发与大模型应用工程中，**break 与 continue** 是学员必须牢固掌握的基本功。智链科技 Nexus 项目组在 Day 3 的代码评审中，特别强调以下几点：
-
-1. **为什么学**：break 与 continue 直接服务于后续 NexusAgent 平台的 `NEXUS-E1` 模块。没有扎实的 break 与 continue，Day 10 之后调用 API、解析 JSON、编写 Agent 工具函数时会出现大量低级错误。
-
-2. **常见坑**：
-   - 忽略输入类型校验，导致运行时 `TypeError`
-   - 编码问题（Windows 默认 GBK vs UTF-8）
-   - 复制粘贴时缩进错乱（Python 对缩进敏感）
-
-3. **企业实践**：在 SmartLink 的 GitLab 仓库中，所有与 break 与 continue 相关的代码必须经过 Ruff 静态检查；变量命名使用 `snake_case`，常量使用 `UPPER_SNAKE_CASE`。
-
-4. **与主线项目的关系**：今日代码位于 `courseware/day-03/code/`，部分模块将逐步合并到 `platform/nexus_agent/`。请养成「每日代码皆可运行、皆可测试」的习惯。
-
-5. **扩展阅读建议**：完成今日作业后，可阅读 `docs/project-master-plan.md` 中关于 NEXUS-E1 的章节，建立全局视角。
-
-**课堂互动题**：请用 3 句话向非技术同事解释「break 与 continue」是什么。写在作业 MR 的评论里，讲师会抽查点评。
-
-**实操检查清单**：
-- [ ] 能不看课件复述 break 与 continue 的定义
-- [ ] 能独立写出相关代码并运行
-- [ ] 能向同学讲解一处容易写错的地方
-
-
-
-### 深度讲解 5：for 循环与 range
-
-在企业级 Python 开发与大模型应用工程中，**for 循环与 range** 是学员必须牢固掌握的基本功。智链科技 Nexus 项目组在 Day 3 的代码评审中，特别强调以下几点：
-
-1. **为什么学**：for 循环与 range 直接服务于后续 NexusAgent 平台的 `NEXUS-E1` 模块。没有扎实的 for 循环与 range，Day 10 之后调用 API、解析 JSON、编写 Agent 工具函数时会出现大量低级错误。
-
-2. **常见坑**：
-   - 忽略输入类型校验，导致运行时 `TypeError`
-   - 编码问题（Windows 默认 GBK vs UTF-8）
-   - 复制粘贴时缩进错乱（Python 对缩进敏感）
-
-3. **企业实践**：在 SmartLink 的 GitLab 仓库中，所有与 for 循环与 range 相关的代码必须经过 Ruff 静态检查；变量命名使用 `snake_case`，常量使用 `UPPER_SNAKE_CASE`。
-
-4. **与主线项目的关系**：今日代码位于 `courseware/day-03/code/`，部分模块将逐步合并到 `platform/nexus_agent/`。请养成「每日代码皆可运行、皆可测试」的习惯。
-
-5. **扩展阅读建议**：完成今日作业后，可阅读 `docs/project-master-plan.md` 中关于 NEXUS-E1 的章节，建立全局视角。
-
-**课堂互动题**：请用 3 句话向非技术同事解释「for 循环与 range」是什么。写在作业 MR 的评论里，讲师会抽查点评。
-
-**实操检查清单**：
-- [ ] 能不看课件复述 for 循环与 range 的定义
-- [ ] 能独立写出相关代码并运行
-- [ ] 能向同学讲解一处容易写错的地方
-
-
-
-### 深度讲解 6：嵌套循环时间复杂度直觉
-
-在企业级 Python 开发与大模型应用工程中，**嵌套循环时间复杂度直觉** 是学员必须牢固掌握的基本功。智链科技 Nexus 项目组在 Day 3 的代码评审中，特别强调以下几点：
-
-1. **为什么学**：嵌套循环时间复杂度直觉 直接服务于后续 NexusAgent 平台的 `NEXUS-E1` 模块。没有扎实的 嵌套循环时间复杂度直觉，Day 10 之后调用 API、解析 JSON、编写 Agent 工具函数时会出现大量低级错误。
-
-2. **常见坑**：
-   - 忽略输入类型校验，导致运行时 `TypeError`
-   - 编码问题（Windows 默认 GBK vs UTF-8）
-   - 复制粘贴时缩进错乱（Python 对缩进敏感）
-
-3. **企业实践**：在 SmartLink 的 GitLab 仓库中，所有与 嵌套循环时间复杂度直觉 相关的代码必须经过 Ruff 静态检查；变量命名使用 `snake_case`，常量使用 `UPPER_SNAKE_CASE`。
-
-4. **与主线项目的关系**：今日代码位于 `courseware/day-03/code/`，部分模块将逐步合并到 `platform/nexus_agent/`。请养成「每日代码皆可运行、皆可测试」的习惯。
-
-5. **扩展阅读建议**：完成今日作业后，可阅读 `docs/project-master-plan.md` 中关于 NEXUS-E1 的章节，建立全局视角。
-
-**课堂互动题**：请用 3 句话向非技术同事解释「嵌套循环时间复杂度直觉」是什么。写在作业 MR 的评论里，讲师会抽查点评。
-
-**实操检查清单**：
-- [ ] 能不看课件复述 嵌套循环时间复杂度直觉 的定义
-- [ ] 能独立写出相关代码并运行
-- [ ] 能向同学讲解一处容易写错的地方
-
-
-
-### 深度讲解 7：input() 与用户交互
-
-在企业级 Python 开发与大模型应用工程中，**input() 与用户交互** 是学员必须牢固掌握的基本功。智链科技 Nexus 项目组在 Day 3 的代码评审中，特别强调以下几点：
-
-1. **为什么学**：input() 与用户交互 直接服务于后续 NexusAgent 平台的 `NEXUS-E1` 模块。没有扎实的 input() 与用户交互，Day 10 之后调用 API、解析 JSON、编写 Agent 工具函数时会出现大量低级错误。
-
-2. **常见坑**：
-   - 忽略输入类型校验，导致运行时 `TypeError`
-   - 编码问题（Windows 默认 GBK vs UTF-8）
-   - 复制粘贴时缩进错乱（Python 对缩进敏感）
-
-3. **企业实践**：在 SmartLink 的 GitLab 仓库中，所有与 input() 与用户交互 相关的代码必须经过 Ruff 静态检查；变量命名使用 `snake_case`，常量使用 `UPPER_SNAKE_CASE`。
-
-4. **与主线项目的关系**：今日代码位于 `courseware/day-03/code/`，部分模块将逐步合并到 `platform/nexus_agent/`。请养成「每日代码皆可运行、皆可测试」的习惯。
-
-5. **扩展阅读建议**：完成今日作业后，可阅读 `docs/project-master-plan.md` 中关于 NEXUS-E1 的章节，建立全局视角。
-
-**课堂互动题**：请用 3 句话向非技术同事解释「input() 与用户交互」是什么。写在作业 MR 的评论里，讲师会抽查点评。
-
-**实操检查清单**：
-- [ ] 能不看课件复述 input() 与用户交互 的定义
-- [ ] 能独立写出相关代码并运行
-- [ ] 能向同学讲解一处容易写错的地方
-
-
-
-### 深度讲解 8：随机数 random.randint
-
-在企业级 Python 开发与大模型应用工程中，**随机数 random.randint** 是学员必须牢固掌握的基本功。智链科技 Nexus 项目组在 Day 3 的代码评审中，特别强调以下几点：
-
-1. **为什么学**：随机数 random.randint 直接服务于后续 NexusAgent 平台的 `NEXUS-E1` 模块。没有扎实的 随机数 random.randint，Day 10 之后调用 API、解析 JSON、编写 Agent 工具函数时会出现大量低级错误。
-
-2. **常见坑**：
-   - 忽略输入类型校验，导致运行时 `TypeError`
-   - 编码问题（Windows 默认 GBK vs UTF-8）
-   - 复制粘贴时缩进错乱（Python 对缩进敏感）
-
-3. **企业实践**：在 SmartLink 的 GitLab 仓库中，所有与 随机数 random.randint 相关的代码必须经过 Ruff 静态检查；变量命名使用 `snake_case`，常量使用 `UPPER_SNAKE_CASE`。
-
-4. **与主线项目的关系**：今日代码位于 `courseware/day-03/code/`，部分模块将逐步合并到 `platform/nexus_agent/`。请养成「每日代码皆可运行、皆可测试」的习惯。
-
-5. **扩展阅读建议**：完成今日作业后，可阅读 `docs/project-master-plan.md` 中关于 NEXUS-E1 的章节，建立全局视角。
-
-**课堂互动题**：请用 3 句话向非技术同事解释「随机数 random.randint」是什么。写在作业 MR 的评论里，讲师会抽查点评。
-
-**实操检查清单**：
-- [ ] 能不看课件复述 随机数 random.randint 的定义
-- [ ] 能独立写出相关代码并运行
-- [ ] 能向同学讲解一处容易写错的地方
-
-
-
-### 深度讲解 9：字典映射实现分发
-
-在企业级 Python 开发与大模型应用工程中，**字典映射实现分发** 是学员必须牢固掌握的基本功。智链科技 Nexus 项目组在 Day 3 的代码评审中，特别强调以下几点：
-
-1. **为什么学**：字典映射实现分发 直接服务于后续 NexusAgent 平台的 `NEXUS-E1` 模块。没有扎实的 字典映射实现分发，Day 10 之后调用 API、解析 JSON、编写 Agent 工具函数时会出现大量低级错误。
-
-2. **常见坑**：
-   - 忽略输入类型校验，导致运行时 `TypeError`
-   - 编码问题（Windows 默认 GBK vs UTF-8）
-   - 复制粘贴时缩进错乱（Python 对缩进敏感）
-
-3. **企业实践**：在 SmartLink 的 GitLab 仓库中，所有与 字典映射实现分发 相关的代码必须经过 Ruff 静态检查；变量命名使用 `snake_case`，常量使用 `UPPER_SNAKE_CASE`。
-
-4. **与主线项目的关系**：今日代码位于 `courseware/day-03/code/`，部分模块将逐步合并到 `platform/nexus_agent/`。请养成「每日代码皆可运行、皆可测试」的习惯。
-
-5. **扩展阅读建议**：完成今日作业后，可阅读 `docs/project-master-plan.md` 中关于 NEXUS-E1 的章节，建立全局视角。
-
-**课堂互动题**：请用 3 句话向非技术同事解释「字典映射实现分发」是什么。写在作业 MR 的评论里，讲师会抽查点评。
-
-**实操检查清单**：
-- [ ] 能不看课件复述 字典映射实现分发 的定义
-- [ ] 能独立写出相关代码并运行
-- [ ] 能向同学讲解一处容易写错的地方
-
-
-
-### 深度讲解 10：KeyboardInterrupt 异常处理
-
-在企业级 Python 开发与大模型应用工程中，**KeyboardInterrupt 异常处理** 是学员必须牢固掌握的基本功。智链科技 Nexus 项目组在 Day 3 的代码评审中，特别强调以下几点：
-
-1. **为什么学**：KeyboardInterrupt 异常处理 直接服务于后续 NexusAgent 平台的 `NEXUS-E1` 模块。没有扎实的 KeyboardInterrupt 异常处理，Day 10 之后调用 API、解析 JSON、编写 Agent 工具函数时会出现大量低级错误。
-
-2. **常见坑**：
-   - 忽略输入类型校验，导致运行时 `TypeError`
-   - 编码问题（Windows 默认 GBK vs UTF-8）
-   - 复制粘贴时缩进错乱（Python 对缩进敏感）
-
-3. **企业实践**：在 SmartLink 的 GitLab 仓库中，所有与 KeyboardInterrupt 异常处理 相关的代码必须经过 Ruff 静态检查；变量命名使用 `snake_case`，常量使用 `UPPER_SNAKE_CASE`。
-
-4. **与主线项目的关系**：今日代码位于 `courseware/day-03/code/`，部分模块将逐步合并到 `platform/nexus_agent/`。请养成「每日代码皆可运行、皆可测试」的习惯。
-
-5. **扩展阅读建议**：完成今日作业后，可阅读 `docs/project-master-plan.md` 中关于 NEXUS-E1 的章节，建立全局视角。
-
-**课堂互动题**：请用 3 句话向非技术同事解释「KeyboardInterrupt 异常处理」是什么。写在作业 MR 的评论里，讲师会抽查点评。
-
-**实操检查清单**：
-- [ ] 能不看课件复述 KeyboardInterrupt 异常处理 的定义
-- [ ] 能独立写出相关代码并运行
-- [ ] 能向同学讲解一处容易写错的地方
-
-
-## 阶段复盘锚点（第一阶段:Python编程基础）
-
-今天是 **第一阶段:Python编程基础** 的第 **3** 个学习日。请回顾：
-
-- 昨天学了什么？今天如何承接？
-- 今天的内容在 70 天路线图中的坐标？
-- 如果我是 Tech Lead，会如何 Review 今日代码？
-
-**陈工寄语**：慢即是快。企业里没人关心你一天学了多少个语法点，只关心你写的脚本能不能在服务器上稳定跑 7×24 小时。今天把地基打牢，后面 Agent 编排、RAG 检索才不会塌。
-
-**林悦补充**：产品侧只验收「用户能感知到的价值」。今日交付虽然简单，但「个人信息卡片」本质是后续「用户画像 Agent」的数据采集原型——字段设计请认真思考。
-
-**代码量统计（累计）**：完成今日后，个人仓库累计约 **4200** 行（含注释与测试），全营目标 10 万行。
-
-**明日预告**：请提前阅读 `courseware/day-04/README.md` 开头的旁白，了解上下文。
-
-
-
-## 常见问题 FAQ（讲师答疑实录）
-
-
-**Q1：学习「if/elif/else 条件分支」时最常问的问题是什么？**
-
-A：学员常问「这在大模型开发里到底用在哪里」。直接回答：在 NexusAgent 的 `NEXUS-E1` 中，if/elif/else 条件分支 用于支撑「流程控制」这一交付。建议你打开 `platform/` 对照看未来模块如何引用今日写法。另一个常见问题是「要不要背语法」——不需要背，但要能写出可运行代码，并能在报错时读懂 Traceback。
-
-**追问**：如果线上报错与 if/elif/else 条件分支 相关，如何排查？  
-**答**：① 复现 ② 最小化输入 ③ 打印中间变量 ④ 查 GitLab 历史 diff ⑤ 在 Jira 建 Bug 单附上日志。
-
-
-**Q2：学习「缩进块与 Python 语法」时最常问的问题是什么？**
-
-A：学员常问「这在大模型开发里到底用在哪里」。直接回答：在 NexusAgent 的 `NEXUS-E1` 中，缩进块与 Python 语法 用于支撑「流程控制」这一交付。建议你打开 `platform/` 对照看未来模块如何引用今日写法。另一个常见问题是「要不要背语法」——不需要背，但要能写出可运行代码，并能在报错时读懂 Traceback。
-
-**追问**：如果线上报错与 缩进块与 Python 语法 相关，如何排查？  
-**答**：① 复现 ② 最小化输入 ③ 打印中间变量 ④ 查 GitLab 历史 diff ⑤ 在 Jira 建 Bug 单附上日志。
-
-
-**Q3：学习「while 循环与终止条件」时最常问的问题是什么？**
-
-A：学员常问「这在大模型开发里到底用在哪里」。直接回答：在 NexusAgent 的 `NEXUS-E1` 中，while 循环与终止条件 用于支撑「流程控制」这一交付。建议你打开 `platform/` 对照看未来模块如何引用今日写法。另一个常见问题是「要不要背语法」——不需要背，但要能写出可运行代码，并能在报错时读懂 Traceback。
-
-**追问**：如果线上报错与 while 循环与终止条件 相关，如何排查？  
-**答**：① 复现 ② 最小化输入 ③ 打印中间变量 ④ 查 GitLab 历史 diff ⑤ 在 Jira 建 Bug 单附上日志。
-
-
-**Q4：学习「break 与 continue」时最常问的问题是什么？**
-
-A：学员常问「这在大模型开发里到底用在哪里」。直接回答：在 NexusAgent 的 `NEXUS-E1` 中，break 与 continue 用于支撑「流程控制」这一交付。建议你打开 `platform/` 对照看未来模块如何引用今日写法。另一个常见问题是「要不要背语法」——不需要背，但要能写出可运行代码，并能在报错时读懂 Traceback。
-
-**追问**：如果线上报错与 break 与 continue 相关，如何排查？  
-**答**：① 复现 ② 最小化输入 ③ 打印中间变量 ④ 查 GitLab 历史 diff ⑤ 在 Jira 建 Bug 单附上日志。
-
-
-**Q5：学习「for 循环与 range」时最常问的问题是什么？**
-
-A：学员常问「这在大模型开发里到底用在哪里」。直接回答：在 NexusAgent 的 `NEXUS-E1` 中，for 循环与 range 用于支撑「流程控制」这一交付。建议你打开 `platform/` 对照看未来模块如何引用今日写法。另一个常见问题是「要不要背语法」——不需要背，但要能写出可运行代码，并能在报错时读懂 Traceback。
-
-**追问**：如果线上报错与 for 循环与 range 相关，如何排查？  
-**答**：① 复现 ② 最小化输入 ③ 打印中间变量 ④ 查 GitLab 历史 diff ⑤ 在 Jira 建 Bug 单附上日志。
-
-
-**Q6：学习「嵌套循环时间复杂度直觉」时最常问的问题是什么？**
-
-A：学员常问「这在大模型开发里到底用在哪里」。直接回答：在 NexusAgent 的 `NEXUS-E1` 中，嵌套循环时间复杂度直觉 用于支撑「流程控制」这一交付。建议你打开 `platform/` 对照看未来模块如何引用今日写法。另一个常见问题是「要不要背语法」——不需要背，但要能写出可运行代码，并能在报错时读懂 Traceback。
-
-**追问**：如果线上报错与 嵌套循环时间复杂度直觉 相关，如何排查？  
-**答**：① 复现 ② 最小化输入 ③ 打印中间变量 ④ 查 GitLab 历史 diff ⑤ 在 Jira 建 Bug 单附上日志。
-
-
-**Q7：学习「input() 与用户交互」时最常问的问题是什么？**
-
-A：学员常问「这在大模型开发里到底用在哪里」。直接回答：在 NexusAgent 的 `NEXUS-E1` 中，input() 与用户交互 用于支撑「流程控制」这一交付。建议你打开 `platform/` 对照看未来模块如何引用今日写法。另一个常见问题是「要不要背语法」——不需要背，但要能写出可运行代码，并能在报错时读懂 Traceback。
-
-**追问**：如果线上报错与 input() 与用户交互 相关，如何排查？  
-**答**：① 复现 ② 最小化输入 ③ 打印中间变量 ④ 查 GitLab 历史 diff ⑤ 在 Jira 建 Bug 单附上日志。
-
-
-**Q8：学习「随机数 random.randint」时最常问的问题是什么？**
-
-A：学员常问「这在大模型开发里到底用在哪里」。直接回答：在 NexusAgent 的 `NEXUS-E1` 中，随机数 random.randint 用于支撑「流程控制」这一交付。建议你打开 `platform/` 对照看未来模块如何引用今日写法。另一个常见问题是「要不要背语法」——不需要背，但要能写出可运行代码，并能在报错时读懂 Traceback。
-
-**追问**：如果线上报错与 随机数 random.randint 相关，如何排查？  
-**答**：① 复现 ② 最小化输入 ③ 打印中间变量 ④ 查 GitLab 历史 diff ⑤ 在 Jira 建 Bug 单附上日志。
-
-
-**Q9：学习「字典映射实现分发」时最常问的问题是什么？**
-
-A：学员常问「这在大模型开发里到底用在哪里」。直接回答：在 NexusAgent 的 `NEXUS-E1` 中，字典映射实现分发 用于支撑「流程控制」这一交付。建议你打开 `platform/` 对照看未来模块如何引用今日写法。另一个常见问题是「要不要背语法」——不需要背，但要能写出可运行代码，并能在报错时读懂 Traceback。
-
-**追问**：如果线上报错与 字典映射实现分发 相关，如何排查？  
-**答**：① 复现 ② 最小化输入 ③ 打印中间变量 ④ 查 GitLab 历史 diff ⑤ 在 Jira 建 Bug 单附上日志。
-
-
-**Q10：学习「KeyboardInterrupt 异常处理」时最常问的问题是什么？**
-
-A：学员常问「这在大模型开发里到底用在哪里」。直接回答：在 NexusAgent 的 `NEXUS-E1` 中，KeyboardInterrupt 异常处理 用于支撑「流程控制」这一交付。建议你打开 `platform/` 对照看未来模块如何引用今日写法。另一个常见问题是「要不要背语法」——不需要背，但要能写出可运行代码，并能在报错时读懂 Traceback。
-
-**追问**：如果线上报错与 KeyboardInterrupt 异常处理 相关，如何排查？  
-**答**：① 复现 ② 最小化输入 ③ 打印中间变量 ④ 查 GitLab 历史 diff ⑤ 在 Jira 建 Bug 单附上日志。
-
-
-## 面试押题（与今日知识点挂钩）
-
-以下题目会出现在 Day 67-69 模拟面试中，建议今日就开始积累答案：
-
-1. **if/elif/else 条件分支**：请结合 NexusAgent 项目举例说明你在哪一天、哪段代码里用到了它？
-2. **缩进块与 Python 语法**：请结合 NexusAgent 项目举例说明你在哪一天、哪段代码里用到了它？
-3. **while 循环与终止条件**：请结合 NexusAgent 项目举例说明你在哪一天、哪段代码里用到了它？
-4. **break 与 continue**：请结合 NexusAgent 项目举例说明你在哪一天、哪段代码里用到了它？
-5. **for 循环与 range**：请结合 NexusAgent 项目举例说明你在哪一天、哪段代码里用到了它？
-6. **嵌套循环时间复杂度直觉**：请结合 NexusAgent 项目举例说明你在哪一天、哪段代码里用到了它？
-
-**参考答案思路**：采用 STAR 法则（情境-任务-行动-结果），引用 `courseware/day-03/code/` 中的具体文件名与函数名。
+### 2. guess_number.py — 下午 S01
+
+**设计要点**：
+- `compare_guess(guess, target)` — **纯函数**，可单测
+- `play_round(input_fn=..., target=...)` — **依赖注入**，测试不卡在 input()
+- 无效输入：`attempts -= 1` + `continue`
+
+**compare_guess 逻辑**：
+
+```python
+if guess < target: return "low"
+if guess > target: return "high"
+return "win"
+```
+
+**演示模式**（CI/全链路测试用）：
+
+```bash
+python3 guess_number.py --demo
+# 脚本化输入 20→60→45→42，目标固定 42
+```
 
 ---
 
+### 3. multiplication_table.py — 下午 S02
 
-## Code Review 检查表（陈工版）
+**嵌套 for 结构**：
 
-合并 MR 前自查：
+```python
+for i in range(1, size + 1):      # 外层：行
+    for j in range(1, i + 1):     # 内层：列（三角形）
+        f"{j}×{i}={i*j:2d}"       # :2d 右对齐两位
+```
 
-- [ ] 所有新增 `.py` 文件顶部有模块说明 docstring
-- [ ] 无硬编码密钥（API Key 走环境变量）
-- [ ] 函数长度 < 50 行，过长则拆分
-- [ ] 异常有明确提示，禁止裸 `except:`
-- [ ] 提交信息符合 `feat(day-03): ...`
-- [ ] README 或注释说明如何运行
-- [ ] 与 Jira Story 验收标准逐条对应
-
-**今日重点审查项**：流程控制 相关逻辑是否可读、可测、可扩展至 `platform/nexus_agent/`。
+**测试友好**：`build_table(3)` 返回 `list[str]`，不依赖 print。
 
 ---
 
+### 4. menu_system.py — 下午 S03 ⭐
+
+**字典 dispatch（企业标准模式）**：
+
+```python
+actions = {
+    "1": handle_version,
+    "2": handle_goal,
+    "3": lambda: handle_add(input_fn, print_fn),
+}
+handler = actions.get(choice)
+if handler is None:
+    continue
+handler()
+```
+
+**为什么不用 elif 链？**
+- 新增菜单项只改 `actions` 字典
+- 每个 handler 可独立单测
+- Day 14 CLI 的 `/clear` `/save` 将沿用此模式
+
+**自动化测试**：
+
+```bash
+python3 menu_system.py --test
+# 模拟：选1看版本 → 选3算10+20 → 选0退出
+```
+
+---
+
+## 深度讲解
+
+### 1. if / elif / else 与缩进
+
+Python 用**缩进**（4 空格）表示代码块，不用 `{}`。  
+**常见坑**：复制粘贴后缩进错乱 → `IndentationError`。
+
+### 2. while vs for
+
+| 场景 | 推荐 |
+|------|------|
+| 次数未知（猜数字、重试直到成功） | `while` |
+| 遍历已知序列/范围 | `for` + `range` |
+| 无限服务循环（菜单、服务器） | `while True` + `break` |
+
+### 3. break vs continue vs return
+
+| 关键字 | 作用 |
+|--------|------|
+| `break` | 跳出**当前循环** |
+| `continue` | 跳过本轮，进入下一轮 |
+| `return` | 退出**整个函数** |
+
+猜数字猜中时用 `return` 结束 `play_round()`；无效输入用 `continue`。
+
+### 4. range() 详解
+
+```python
+range(5)        # 0,1,2,3,4
+range(1, 10)    # 1..9
+range(0, 10, 2) # 0,2,4,6,8 步长2
+```
+
+### 5. 字典 dispatch vs elif 链
+
+```python
+# ❌ 不推荐：每加一个菜单改一处 elif
+if choice == "1": ...
+elif choice == "2": ...
+# ... 50 个 elif
+
+# ✅ 推荐：注册表模式
+actions = {"1": fn1, "2": fn2}
+actions.get(choice, default_invalid)()
+```
+
+---
+
+## 实验手册
+
+### 实验 A：修改 flow_control_basics.py
+
+1. 将 `http_status` 改为 `503`，观察 `message` 和 `should_retry`
+2. 将 `batch_indices(127, 10)` 手算前 3 个元组验证
+
+### 实验 B：猜数字边界
+
+```bash
+python3 guess_number.py  # 交互
+# 故意输入 abc、0、101 观察 continue 行为
+# 输入 50 观察太大/太小提示
+```
+
+### 实验 C：菜单 Ctrl+C
+
+```bash
+python3 menu_system.py
+# 按 Ctrl+C，应输出「用户中断，安全退出」
+```
+
+### 排错手册
+
+| 错误 | 原因 | 解决 |
+|------|------|------|
+| `IndentationError` | Tab/空格混用 | 统一 4 空格 |
+| 菜单死循环 | 缺少 `break` | 检查 choice=="0" 分支 |
+| `StopIteration` | mock 输入不够 | 测试时补全输入序列 |
+| 乘法表错位 | 格式化宽度不够 | 用 `{i*j:2d}` |
+
+---
+
+## 常见问题 FAQ
+
+**Q1：`while True` 安全吗？**  
+A：菜单/服务器场景常用，必须有 `break` 或异常处理退出。永远要有「出口」。
+
+**Q2：为什么 guess_number 要抽 `compare_guess`？**  
+A：纯函数无副作用，pytest 可直接测，不用 mock input。
+
+**Q3：`continue` 后 attempts 为什么要减 1？**  
+A：循环开头已 `attempts += 1`，无效输入不应算一次——这是产品规则。
+
+**Q4：enumerate 的 start=1 有什么用？**  
+A：人类习惯从 1 编号（行号、菜单项），默认从 0 开始。
+
+**Q5：和 Day 14 CLI 什么关系？**  
+A：Day 14 的 `/clear` `/save` `/exit` 就是 `actions` 字典里的 slash 命令处理器。
+
+---
 
 ## 课后作业
 
-### 作业说明
+### 要求
 
-**作业：增强 menu_system.py**
+1. 完成 `homework/menu_extended.py`（或对照答案）
+2. 新增菜单 4（猜数字）、5（乘法表）
+3. 无效选项连续 3 次提示后重置
+4. 使用 `actions` 字典，禁止超长 elif
 
-1. 复制为 `homework/menu_extended.py`
-2. 新增菜单项 `4. 启动猜数字`（复用 guess_number 逻辑或 import）
-3. 新增菜单项 `5. 打印乘法表` 可输入 n（1-9）
-4. 错误输入最多提示 3 次后返回主菜单（防止死循环）
-5. 使用字典 `actions` 注册处理器，禁止超过 15 行的 elif 链
-
-
-### 提交要求
-
-1. 代码提交到分支 `feature/day-03-homework`
-2. GitLab MR 标题：`[Day-03] homework: 课后作业`
-3. 在 MR 描述中附上运行截图或终端输出
-
-### 评分标准（满分 100）
-
-| 项 | 分值 |
-|----|------|
-| 功能完整 | 40 |
-| 代码规范与注释 | 30 |
-| 异常处理 | 15 |
-| MR 与 Jira 关联 | 15 |
-
----
-
-## 作业参考答案
-
-> ⚠️ 请先独立完成再对照答案
-
-```python
-import random
-
-def play_guess() -> None:
-  target = random.randint(1, 100)
-  for i in range(1, 8):
-    g = input("猜数字(1-100): ").strip()
-    if not g.isdigit():
-      print("无效"); continue
-    n = int(g)
-    if n == target:
-      print(f"中了，{i}次"); return
-    print("大" if n > target else "小")
-  print(f"失败，答案{target}")
-
-def print_table(n: int) -> None:
-  for i in range(1, n + 1):
-    print("  ".join(f"{j}×{i}={i*j}" for j in range(1, i + 1)))
-
-actions = {"4": play_guess, "5": lambda: print_table(int(input("n=") or "9"))}
-# 在 run_menu 的 actions 合并并处理无效输入计数
-```
-
-
----
-
-
-## 附录：Git 提交示例
+### 运行验证
 
 ```bash
-git checkout develop
-git pull origin develop
-git checkout -b feature/day-03-流程控制
-# 完成代码后
-git add courseware/day-03/
-git commit -m "feat(day-03): 流程控制"
-git push -u origin feature/day-03-流程控制
+python3 homework/menu_extended.py --test
+# ✅ 全部作业自测通过（3 组用例）
 ```
 
 ---
 
-*课件版本 Day-03-v1.0 | 智链科技培训中心*
+## 全链路自测
+
+```bash
+bash nexus-agent-bootcamp/scripts/run_day03_full_test.sh
+```
+
+**通过标志**：`🎉 Day 03 全链路验证 100% 通过`
+
+**测试覆盖**：
+- 4 个主脚本 + demo/test 模式
+- 作业 3 组用例
+- pytest **18** 个单元测试
+- README ≥ 20000 字
+
+---
+
+## Code Review 检查表
+
+- [ ] 无超过 15 行的 elif 链（菜单用 dict）
+- [ ] `while` 循环有明确 `break` 出口
+- [ ] 交互脚本处理 `KeyboardInterrupt`
+- [ ] 游戏/菜单逻辑与 I/O 分离（可测试）
+- [ ] 提交：`feat(day-03): 流程控制三件套`
+
+---
+
+## 附录 A：控制流速查表
+
+| 语句 | 语法 | 用途 |
+|------|------|------|
+| 分支 | `if/elif/else` | 条件执行 |
+| 条件循环 | `while cond:` | 重试、菜单 |
+| 遍历 | `for x in seq:` | 列表、字符串 |
+| 范围 | `range(n)` | 数字序列 |
+| 带索引遍历 | `enumerate(seq)` | 行号、批次号 |
+| 跳出循环 | `break` | 退出 while/for |
+| 跳过本轮 | `continue` | 无效输入重试 |
+| 退出函数 | `return` | 猜中结束游戏 |
+
+---
+
+## 附录 B：guess_number 状态机
+
+```mermaid
+stateDiagram-v2
+    [*] --> WaitingInput
+    WaitingInput --> Validate: 读取输入
+    Validate --> WaitingInput: 无效(continue)
+    Validate --> Compare: 有效数字
+    Compare --> Win: guess==target
+    Compare --> WaitingInput: 太大/太小
+    Win --> [*]: return True
+    WaitingInput --> Lose: 次数用尽
+    Lose --> [*]: return False
+```
+
+---
+
+## 附录 C：客服批处理预览（连接 Day 2）
+
+Day 2 的 `text_cleaner` 清洗单行；Day 3 的 `for` 可批量处理：
+
+```python
+for line in open("comments.txt"):
+    cleaned = clean_text(line)
+    print(cleaned)
+```
+
+Day 4 将用 `list` 在内存中管理这些行。
+
+---
+
+## 附录 D：单元测试清单（test_day03.py）
+
+| 类 | 用例数 | 覆盖 |
+|----|--------|------|
+| TestFlowControlBasics | 4 | 重试、批处理、等级 |
+| TestGuessNumber | 4 | 比较、校验、胜负 |
+| TestMultiplicationTable | 3 | 行、表、边界 |
+| TestMenuSystem | 2 | actions、脚本菜单 |
+| TestScriptsRunnable | 4 | 子进程运行 |
+| TestHomework | 1 | 作业自测 |
+
+---
+
+## 附录 E：面试押题
+
+**题 1**：`break` 和 `continue` 区别？  
+**答**：break 终止整个循环；continue 跳过本轮剩余代码，进入下一轮。
+
+**题 2**：如何用字典替代 elif 实现菜单？  
+**答**：`actions = {"1": fn1}`，`handler = actions.get(choice)`，None 则无效。
+
+**题 3**：为什么菜单用 `while True`？  
+**答**：服务循环直到用户主动退出；比 `while running` 更简洁，靠 break 退出。
+
+**题 4**：range(0, 127, 10) 生成什么？  
+**答**：0, 10, 20, ..., 120 — 批处理起始下标。
+
+**题 5**：如何让 input() 代码可测试？  
+**答**：依赖注入 `input_fn` 参数，测试时传入 mock 函数。
+
+---
+
+## 附录 F：Git 提交
+
+```bash
+git checkout -b feature/day-03-flow-control
+git add courseware/day-03/
+git commit -m "feat(day-03): 流程控制猜数字/乘法表/菜单系统"
+git push -u origin feature/day-03-flow-control
+```
+
+---
+
+## 附录 G：知识点后续映射
+
+| 今日 | 后续 |
+|------|------|
+| `while` 重试 | Day 12 API retry、Day 13 装饰器重试 |
+| `for` 遍历 | Day 4 列表、Day 11 文件行遍历 |
+| dict dispatch | Day 14 CLI、Day 19 Function Calling 路由 |
+| `enumerate` | Day 11 日志行号、Day 34 Ragas 评估遍历 |
+| 输入校验+continue | Day 12 API 参数校验、Day 23 Pydantic |
+
+---
+
+## 附录 H：完整命令速查
+
+```bash
+cd courseware/day-03/code
+
+# 上午
+python3 flow_control_basics.py
+
+# 下午
+python3 guess_number.py --demo
+python3 multiplication_table.py
+python3 menu_system.py --test
+
+# 作业与测试
+python3 ../homework/menu_extended.py --test
+python3 -m pytest test_day03.py -v
+
+# 全链路
+bash ../../scripts/run_day03_full_test.sh
+```
+
+---
+
+## 附录 I：陈工 Code Review 实录（节选）
+
+> **陈工**：`menu_system.py` 的 `build_actions` 写得对。但记住，`print_fn` 也要注入——不然测试捕获不到 handler 输出。  
+> **小李**：guess_number 里 `attempts -= 1` 好绕……  
+> **陈工**：产品规则：输错不扣次数。你要在代码里体现业务，别偷懒。  
+> **林悦**：菜单项 4、5 的作业周五前合并，别拖到 Day 14 再补。
+
+---
+
+## 附录 J：LeetCode 练习（晚自习）
+
+课件内已实现 `is_palindrome()` 思路，完整版在 Day 2 text_cleaner。今日练习：
+
+```python
+# 判断回文（忽略非字母数字）
+def is_palindrome(s: str) -> bool:
+    cleaned = re.sub(r"[^a-zA-Z0-9\u4e00-\u9fff]", "", s).lower()
+    return cleaned == cleaned[::-1] and len(cleaned) > 0
+```
+
+测试用例：`"上海自来水来自海上"` → True，`"hello"` → False。
+
+---
+
+## 附录 K：完整源码索引与行级说明
+
+### K.1 flow_control_basics.py（约 120 行）
+
+| 函数/块 | 行级要点 |
+|---------|----------|
+| `http_status` 分支 | 模拟 Day 12 API 错误处理策略 |
+| `simulate_retry()` | `while` + `break` 经典模式 |
+| `batch_indices()` | `range(0, total, step)` 批处理原型 |
+| `label_lines()` | `enumerate(lines, start=1)` 行号 |
+| `score_to_grade()` | `if-elif-else` 多分支 |
+
+### K.2 guess_number.py 核心函数
+
+```python
+def compare_guess(guess: int, target: int) -> str:
+    if guess < target: return "low"
+    if guess > target: return "high"
+    return "win"
+
+def play_round(*, target=None, input_fn=input, print_fn=print, max_attempts=7) -> bool:
+    secret = target or random.randint(1, 100)
+    attempts = 0
+    while attempts < max_attempts:
+        attempts += 1
+        raw = input_fn(f"第 {attempts} 次猜测: ")
+        if not is_valid_guess_input(raw):
+            attempts -= 1
+            continue
+        result = compare_guess(int(raw), secret)
+        if result == "win":
+            return True
+    return False
+```
+
+**测试注入示例**：
+
+```python
+inputs = iter(["50", "42"])
+won = play_round(target=42, input_fn=lambda _: next(inputs), print_fn=lambda _: None)
+assert won is True
+```
+
+### K.3 multiplication_table.py 核心
+
+```python
+def build_row(i: int) -> str:
+    parts = []
+    for j in range(1, i + 1):
+        parts.append(f"{j}×{i}={i*j:2d}")
+    return "  ".join(parts)
+
+def build_table(size: int) -> list[str]:
+    return [build_row(i) for i in range(1, size + 1)]
+```
+
+### K.4 menu_system.py 主循环
+
+```python
+while True:
+    show_menu(print_fn)
+    choice = input_fn("请选择: ").strip()
+    if choice == "0":
+        break
+    handler = actions.get(choice)
+    if handler is None:
+        continue
+    handler()
+```
+
+---
+
+## 附录 L：三日知识串联图
+
+```mermaid
+flowchart LR
+    D1[Day1 变量print] --> D2[Day2 字符串f-string]
+    D2 --> D3[Day3 流程控制]
+    D3 --> D4[Day4 列表todo]
+    D3 --> D14[Day14 CLI菜单]
+```
+
+| Day | 技能 | Day 3 如何承接 |
+|-----|------|----------------|
+| 1 | 变量、f-string | flow_control 报告格式化 |
+| 2 | 字符串、正则 | 菜单输入校验 `isdigit()` |
+| 3 | 控制流 | 今日核心 |
+| 4 | list | 明日 todo 用列表存任务 |
+
+---
+
+## 附录 M：企业级菜单扩展指南（Day 14 预习）
+
+Day 14 CLI 将把今日模式升级为 slash 命令：
+
+```python
+SLASH_COMMANDS = {
+    "/clear": clear_history,
+    "/save": save_to_json,
+    "/exit": exit_program,
+    "/help": show_help,
+}
+```
+
+核心不变：**字典查找 + handler 执行 + while 主循环**。
+
+---
+
+## 附录 N：调试技巧（晚自习主题）
+
+| 技巧 | 适用场景 | 示例 |
+|------|----------|------|
+| print 调试 | 快速看变量 | `print(f"choice={choice!r}")` |
+| 断点 | VS Code 左侧点击行号 | F5 调试 |
+| pytest | 回归测试 | `pytest test_day03.py -v` |
+| `--demo/--test` | 无交互 CI | 本日所有脚本均支持 |
+
+**陈工建议**：先写可测试的纯函数，再包一层 I/O。这就是「测试驱动」的雏形。
+
+---
+
+## 附录 O：运算符优先级与控制流结合
+
+```python
+# 先算比较，再 and
+can_ingest = status == 200 and len(text) > 0
+
+# 先算 not，再 or
+use_fallback = not success or timeout
+
+# 括号明确意图（推荐）
+should_retry = (status >= 500) and (attempt < max_retries)
+```
+
+控制流内部常嵌套比较运算——Day 2 运算符 + Day 3 分支 = 完整业务判断。
+
+---
+
+## 附录 P：_mock 测试模式说明
+
+`test_day03.py` 中菜单测试模式：
+
+```python
+logs: list[str] = []
+inputs = iter(["1", "0"])
+run_menu(input_fn=lambda _: next(inputs), print_fn=logs.append)
+assert any("v0.1-day03" in line for line in logs)
+```
+
+这种模式将贯穿后续所有交互式 CLI 测试（Day 7 通讯录、Day 14 对话助手）。
+
+---
+
+## 附录 Q：错误处理进阶（预告 Day 10）
+
+今日用 `try/except KeyboardInterrupt`；Day 10 将学完整异常体系：
+
+```python
+try:
+    run_menu()
+except KeyboardInterrupt:
+    print("安全退出")
+except Exception as e:
+    print(f"未知错误: {e}")
+```
+
+---
+
+## 附录 R：性能直觉（optional）
+
+| 操作 | 1000 次循环耗时量级 |
+|------|---------------------|
+| `for i in range(1000)` | < 1ms |
+| `while` 同等次数 | 相近 |
+| 字典查找 `actions.get()` | O(1)，远快于长 elif 链 |
+
+企业菜单 10 个选项以内，elif 与 dict 性能无差别——选 dict 是为了**可维护性**。
+
+---
+
+## 附录 S：学员常见代码对比（正确 vs 错误）
+
+### S.1 菜单死循环（缺少 break）
+
+```python
+# ❌ 错误：永远无法退出
+while True:
+    choice = input("选择: ")
+    if choice == "0":
+        print("再见")  # 忘了 break！
+
+# ✅ 正确
+while True:
+    choice = input("选择: ")
+    if choice == "0":
+        print("再见")
+        break
+```
+
+### S.2 无效输入消耗次数
+
+```python
+# ❌ 错误：abc 也算一次
+while attempts < 7:
+    attempts += 1
+    guess = input("猜: ")
+    if not guess.isdigit():
+        print("无效")
+        # 没有 attempts -= 1
+
+# ✅ 正确：见 guess_number.py
+```
+
+### S.3 乘法表内层循环范围
+
+```python
+# ❌ 错误：打印完整矩形 9×9=81 项
+for j in range(1, 10):
+    ...
+
+# ✅ 正确：三角形，内层到 i
+for j in range(1, i + 1):
+    ...
+```
+
+### S.4 elif 链过长
+
+```python
+# ❌ 超过 5 个分支就该重构
+if c == "1": ...
+elif c == "2": ...
+# ... 15 个 elif
+
+# ✅ 字典 dispatch
+ACTIONS = {"1": fn1, "2": fn2}
+```
+
+---
+
+## 附录 T：今日交付物检查清单（讲师用）
+
+| 检查项 | 命令 | 预期 |
+|--------|------|------|
+| 上午理论 | `python3 flow_control_basics.py` | 含 HTTP 429 重试 |
+| 猜数字 demo | `python3 guess_number.py --demo` | 4 次猜中 42 |
+| 乘法表 | `python3 multiplication_table.py -n 5` | 5 行三角形 |
+| 菜单测试 | `python3 menu_system.py --test` | 10+20=30 |
+| 作业 | `python3 homework/menu_extended.py --test` | 3 组通过 |
+| 单测 | `pytest test_day03.py` | 18 passed |
+| 全链路 | `bash scripts/run_day03_full_test.sh` | 100% 通过 |
+
+---
+
+*课件版本 Day-03-v2.0 | 智链科技培训中心 | 全链路测试通过*
